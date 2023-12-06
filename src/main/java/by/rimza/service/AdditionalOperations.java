@@ -17,6 +17,6 @@ public class AdditionalOperations {
     }
 
     public static long getChatIdFromCallback(Update update) {
-        return update.getCallbackQuery().getFrom().getId();
+        return update.getCallbackQuery().getMessage().getChatId();
     }
 }

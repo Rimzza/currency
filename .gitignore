@@ -4,4 +4,8 @@
 #Maven
 target/
 src/test/
+.mvn/
+HELP.md
+mvnw
+mvnw.cmd
 *.properties

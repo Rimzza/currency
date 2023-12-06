@@ -4,11 +4,10 @@ import by.rimza.keyboard.InlineKeyboard;
 import by.rimza.model.Currency;
 import by.rimza.service.AdditionalOperations;
 import by.rimza.service.CurrencyService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -37,8 +36,17 @@ public class CurrencyBot extends TelegramLongPollingBot {
             String callback = AdditionalOperations.getCallback(update);
             getCurrencyRate(chatId, callback);
             sendMessageWithStartUpKeyboard(chatId);
+            answerCallbackQuery(update);
         }
+    }
 
+    public void answerCallbackQuery(Update update) {
+        AnswerCallbackQuery ae = AnswerCallbackQuery.builder().callbackQueryId(update.getCallbackQuery().getId()).cacheTime(1).build();
+        try {
+            execute(ae);
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void sendMessage(long chatId, String text) {
